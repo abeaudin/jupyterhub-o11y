@@ -173,16 +173,16 @@ kubectl rollout restart deployment/proxy```
 
 ### Validate
 Return to the Serverless Project in https://cloud.elastic.co and navigate to Observability -> Applications -> Service Inventory.
-<img width="493" alt="Screenshot 2025-06-10 at 2 22 31 PM" src="https://github.com/user-attachments/assets/551ecc02-311c-44e2-b811-f5be2969de8c" />
+<img width="493" alt="Service Inventory Navigation" src="https://github.com/user-attachments/assets/551ecc02-311c-44e2-b811-f5be2969de8c" />
 
 Here you will see hub instrumented.
-<img width="1322" alt="Screenshot 2025-06-10 at 2 22 42 PM" src="https://github.com/user-attachments/assets/6368d9fb-566a-430e-814f-b8822d0657e3" />
+<img width="1322" alt="APM Services" src="https://github.com/user-attachments/assets/6368d9fb-566a-430e-814f-b8822d0657e3" />
 
 Select it and navigate to transactions, selecting GET /hub/api/users and scroll to the bottom.
-<img width="1332" alt="Screenshot 2025-06-10 at 2 22 59 PM" src="https://github.com/user-attachments/assets/706993c0-418e-44a1-b6b7-9a22f3ca1973" />
-<img width="1316" alt="Screenshot 2025-06-10 at 2 23 05 PM" src="https://github.com/user-attachments/assets/6e0adf10-f5c6-414e-ae21-7c3c9a88a28c" />
+<img width="1332" alt="Services 2" src="https://github.com/user-attachments/assets/706993c0-418e-44a1-b6b7-9a22f3ca1973" />
+<img width="1316" alt="Transactions" src="https://github.com/user-attachments/assets/6e0adf10-f5c6-414e-ae21-7c3c9a88a28c" />
 
 Here you can see the traces for this API call including calls to sqllite.
-<img width="1639" alt="Screenshot 2025-06-10 at 2 23 26 PM" src="https://github.com/user-attachments/assets/87ef1b96-6d2b-47b5-8285-d46cc91c8be3" />
+<img width="1639" alt="Trace Example" src="https://github.com/user-attachments/assets/87ef1b96-6d2b-47b5-8285-d46cc91c8be3" />
 
 
