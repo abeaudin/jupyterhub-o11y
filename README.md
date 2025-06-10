@@ -141,23 +141,48 @@ kubectl get pods
 
 ### Deploy Otel via Elastic
 Head back to https://cloud.elastic.co and return to the serverless project you deployed.
-Add data and select Kubernetes
-<img width="1454" alt="choose k8s" src="https://github.com/user-attachments/assets/85203d21-da02-408b-a094-3ba036d8f565" />
-
-Then select Open Telemetry and follow the instructions to install the helm chart, deploy and then instrument python.
-<img width="1383" alt="install collector" src="https://github.com/user-attachments/assets/2eecb7fb-2737-4fcc-ac42-f6a6b4ea3999" />
+The default landing page is to add data, Select Kubernetes and then OTEL
+<img width="1231" alt="select otel 1" src="https://github.com/user-attachments/assets/7bb6b2d8-1506-418e-b1a7-f9fb4fa6cf53" />
 
 
+Then follow the instructions to install the helm chart, deploy and then instrument python.
+<img width="1250" alt="select otel 2" src="https://github.com/user-attachments/assets/71ffb017-1e09-4f2e-9785-feeaa311235e" />
+
+The commands are as follows
 ```
 helm repo add open-telemetry 'https://open-telemetry.github.io/opentelemetry-helm-charts' --force-update
 kubectl create namespace opentelemetry-operator-system
 ```
-kubectl create secret generic elastic-secret-otel   --namespace opentelemetry-operator-system   --from-literal=elastic_otlp_endpoint='https://ELASTIC-HOST-NAME-From-KIBANA.elastic.cloud:443'   --from-literal=elastic_api_key='ELASTIC-API-KEY-Fr`om-KIBANA'
+
+This one will need to come from the UI as it will have Serverless Project specific settings.
+```kubectl create secret generic elastic-secret-otel   --namespace opentelemetry-operator-system   --from-literal=elastic_otlp_endpoint='https://ELASTIC-HOST-NAME-From-KIBANA.elastic.cloud:443'   --from-literal=elastic_api_key='ELASTIC-API-KEY-From-KIBANA'
+```
 ```
 helm upgrade --install opentelemetry-kube-stack open-telemetry/opentelemetry-kube-stack   --namespace opentelemetry-operator-system   --values 'https://raw.githubusercontent.com/elastic/elastic-agent/refs/tags/v9.0.2/deploy/helm/edot-collector/kube-stack/managed_otlp/values.yaml'   --version '0.3.9'
 ```
 
-```kubectl annotate namespace default instrumentation.opentelemetry.io/inject-python="opentelemetry-operator-system/elastic-instrumentation"
+```
+kubectl annotate namespace default instrumentation.opentelemetry.io/inject-python="opentelemetry-operator-system/elastic-instrumentation"
+```
+
+Lastly restart the jupyterhub nodes to get OTEL shipping data to Elastic
+```
 kubectl rollout restart deployment/user-scheduler
 kubectl rollout restart deployment/hub
 kubectl rollout restart deployment/proxy```
+
+### Validate
+Return to the Serverless Project in https://cloud.elastic.co and navigate to Observability -> Applications -> Service Inventory.
+<img width="493" alt="Screenshot 2025-06-10 at 2 22 31 PM" src="https://github.com/user-attachments/assets/551ecc02-311c-44e2-b811-f5be2969de8c" />
+
+Here you will see hub instrumented.
+<img width="1322" alt="Screenshot 2025-06-10 at 2 22 42 PM" src="https://github.com/user-attachments/assets/6368d9fb-566a-430e-814f-b8822d0657e3" />
+
+Select it and navigate to transactions, selecting GET /hub/api/users and scroll to the bottom.
+<img width="1332" alt="Screenshot 2025-06-10 at 2 22 59 PM" src="https://github.com/user-attachments/assets/706993c0-418e-44a1-b6b7-9a22f3ca1973" />
+<img width="1316" alt="Screenshot 2025-06-10 at 2 23 05 PM" src="https://github.com/user-attachments/assets/6e0adf10-f5c6-414e-ae21-7c3c9a88a28c" />
+
+Here you can see the traces for this API call including calls to sqllite.
+<img width="1639" alt="Screenshot 2025-06-10 at 2 23 26 PM" src="https://github.com/user-attachments/assets/87ef1b96-6d2b-47b5-8285-d46cc91c8be3" />
+
+
