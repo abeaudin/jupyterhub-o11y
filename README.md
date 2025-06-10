@@ -169,7 +169,8 @@ Lastly restart the jupyterhub nodes to get OTEL shipping data to Elastic
 ```
 kubectl rollout restart deployment/user-scheduler
 kubectl rollout restart deployment/hub
-kubectl rollout restart deployment/proxy```
+kubectl rollout restart deployment/proxy
+```
 
 ### Validate
 Return to the Serverless Project in https://cloud.elastic.co and navigate to Observability -> Applications -> Service Inventory.
