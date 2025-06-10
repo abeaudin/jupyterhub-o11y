@@ -18,8 +18,6 @@ Package of template files and instructions on:
 
 
 ### Build a Secure Shell Linode
-![image](https://user-images.githubusercontent.com/7717493/194062204-f8389c14-30b9-4c64-b005-e4bf66e069b3.png)
-
 We'll first create a Linode using the "Secure Your Server" Marketplace image. This will give us a hardened, consistent environment to run our subsequent commands from. 
 
 1. Login to Linode Cloud Manager, Select "Create Linode," and choose the "Secure Your Server" Marketplace image. 
@@ -74,7 +72,6 @@ terraform plan \
 Once deployment is complete, you should see an LKE cluster within the "Kubernetes" section of your Linode Cloud Manager account.
 
 ### Deploy Containers to LKE 
-![image](https://user-images.githubusercontent.com/7717493/194568177-69f97bc4-697b-47bf-9f1b-0d9929061da2.png)
 
 Next step is to use kubectl to deploy the elastic stack to the LKE cluster. 
 
