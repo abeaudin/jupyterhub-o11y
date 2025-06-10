@@ -4,7 +4,7 @@
 
     variable "k8s_version" {
       description = "The Kubernetes version to use for this cluster. (required)"
-      default = "1.23"
+      default = "1.33"
     }
 
     variable "label" {
@@ -31,7 +31,7 @@
       }))
       default = [
         {
-          type = "g6-standard-4"
+          type = "g6-standard-2"
           count = 1
         },
       ]
