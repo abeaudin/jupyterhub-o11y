@@ -117,4 +117,16 @@ helm repo update
 ```
 
 
+helm repo add jupyterhub https://hub.jupyter.org/helm-chart
+helm repo update
+helm upgrade --cleanup-on-fail --install my-jupyter jupyterhub/jupyterhub 
+kubectl get pods
+helm repo add open-telemetry 'https://open-telemetry.github.io/opentelemetry-helm-charts' --force-update
+kubectl create namespace opentelemetry-operator-system
+kubectl create secret generic elastic-secret-otel   --namespace opentelemetry-operator-system   --from-literal=elastic_otlp_endpoint='https://ELASTIC-HOST-NAME-From-KIBANA.elastic.cloud:443'   --from-literal=elastic_api_key='ELASTIC-API-KEY-From-KIBANA'
+helm upgrade --install opentelemetry-kube-stack open-telemetry/opentelemetry-kube-stack   --namespace opentelemetry-operator-system   --values 'https://raw.githubusercontent.com/elastic/elastic-agent/refs/tags/v9.0.2/deploy/helm/edot-collector/kube-stack/managed_otlp/values.yaml'   --version '0.3.9'
 
+kubectl annotate namespace default instrumentation.opentelemetry.io/inject-python="opentelemetry-operator-system/elastic-instrumentation"
+kubectl rollout restart deployment/user-scheduler
+kubectl rollout restart deployment/hub
+kubectl rollout restart deployment/proxy
