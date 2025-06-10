@@ -80,10 +80,12 @@ Next step is to use kubectl to deploy the elastic stack to the LKE cluster.
 
 1. Install kubectl via the below commands from the Linode shell-
 ```
-sudo apt-get update && sudo apt-get install -y ca-certificates curl && sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg 
 ```
 ```
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
 ```
 ```
 sudo apt-get update && sudo apt-get install -y kubectl
@@ -103,6 +105,19 @@ export KUBECONFIG=lke-cluster-config.yaml
 ```
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
 ```
+```
+chmod 700 get_helm.sh
+```
+```
+./get_helm.sh
+```
+
+5. Configure helm with the juptyerhub repo
+```
+helm repo add jupyterhub https://hub.jupyter.org/helm-chart
+```
+```
+helm repo update
 ```
 
 
