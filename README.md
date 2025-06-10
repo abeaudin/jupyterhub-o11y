@@ -45,7 +45,6 @@ Next step is to install Terraform. Run the below commands from the Linode shell-
   ```
 
 ### Provision LKE Cluster using Terraform
-![image](https://user-images.githubusercontent.com/7717493/194547712-d1d8b728-05f1-44dc-b342-16113878f2f0.png)
 
 Next, we build the LKE cluster, with the terraform files that are included in this repository, and pulled into the Linode Shell from the prior git command.
 
