@@ -16,6 +16,21 @@ Package of template files and instructions on:
 
 ## Step by Step Instructions
 
+### Setup an Elastic Serverless Project
+Go to https://cloud.elastic.co and sign up for a free two week trial.
+Once that's completed, deploy a serverless project for Observability.
+
+First select Observability
+<img width="1447" alt="project deploy" src="https://github.com/user-attachments/assets/ae5ce493-0afd-4760-856d-26868f3ad2e5" />
+
+Then provide the project with a name
+<img width="1045" alt="project settings" src="https://github.com/user-attachments/assets/ee1a9567-f4b1-4b2e-a9b7-65de56d34c43" />
+
+Click Create Serverless Project and the project will deploy
+<img width="1057" alt="project deploying" src="https://github.com/user-attachments/assets/99031897-1897-4378-b130-7ab8e0f3c98b" />
+
+
+
 
 ### Build a Secure Shell Linode
 We'll first create a Linode using the "Secure Your Server" Marketplace image. This will give us a hardened, consistent environment to run our subsequent commands from. 
@@ -123,16 +138,26 @@ helm upgrade --cleanup-on-fail --install my-jupyter jupyterhub/jupyterhub
 ```
 kubectl get pods
 ```
+
+### Deploy Otel via Elastic
+Head back to https://cloud.elastic.co and return to the serverless project you deployed.
+Add data and select Kubernetes
+<img width="1454" alt="choose k8s" src="https://github.com/user-attachments/assets/85203d21-da02-408b-a094-3ba036d8f565" />
+
+Then select Open Telemetry and follow the instructions to install the helm chart, deploy and then instrument python.
+<img width="1383" alt="install collector" src="https://github.com/user-attachments/assets/2eecb7fb-2737-4fcc-ac42-f6a6b4ea3999" />
+
+
 ```
 helm repo add open-telemetry 'https://open-telemetry.github.io/opentelemetry-helm-charts' --force-update
 kubectl create namespace opentelemetry-operator-system
 ```
-kubectl create secret generic elastic-secret-otel   --namespace opentelemetry-operator-system   --from-literal=elastic_otlp_endpoint='https://ELASTIC-HOST-NAME-From-KIBANA.elastic.cloud:443'   --from-literal=elastic_api_key='ELASTIC-API-KEY-From-KIBANA'
+kubectl create secret generic elastic-secret-otel   --namespace opentelemetry-operator-system   --from-literal=elastic_otlp_endpoint='https://ELASTIC-HOST-NAME-From-KIBANA.elastic.cloud:443'   --from-literal=elastic_api_key='ELASTIC-API-KEY-Fr`om-KIBANA'
 ```
 helm upgrade --install opentelemetry-kube-stack open-telemetry/opentelemetry-kube-stack   --namespace opentelemetry-operator-system   --values 'https://raw.githubusercontent.com/elastic/elastic-agent/refs/tags/v9.0.2/deploy/helm/edot-collector/kube-stack/managed_otlp/values.yaml'   --version '0.3.9'
 ```
 
-kubectl annotate namespace default instrumentation.opentelemetry.io/inject-python="opentelemetry-operator-system/elastic-instrumentation"
+```kubectl annotate namespace default instrumentation.opentelemetry.io/inject-python="opentelemetry-operator-system/elastic-instrumentation"
 kubectl rollout restart deployment/user-scheduler
 kubectl rollout restart deployment/hub
-kubectl rollout restart deployment/proxy
+kubectl rollout restart deployment/proxy```
